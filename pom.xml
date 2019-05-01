@@ -37,7 +37,7 @@
 		<dependency>
 			<groupId>com.vk.api</groupId>
 			<artifactId>sdk</artifactId>
-			<version>LATEST_VERSION</version>
+			<version>1.0.2</version>
 		</dependency>
 	</dependencies>
 
