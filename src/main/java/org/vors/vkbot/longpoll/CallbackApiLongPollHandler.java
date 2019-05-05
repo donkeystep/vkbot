@@ -1,4 +1,4 @@
-package org.vors.vkbot;
+package org.vors.vkbot.longpoll;
 
 import com.vk.api.sdk.callback.longpoll.CallbackApiLongPoll;
 import com.vk.api.sdk.callback.objects.board.CallbackBoardPostDelete;
