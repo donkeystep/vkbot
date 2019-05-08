@@ -19,6 +19,8 @@ import com.vk.api.sdk.callback.objects.wall.CallbackWallCommentDelete;
 import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.client.actors.GroupActor;
 import com.vk.api.sdk.client.actors.UserActor;
+import com.vk.api.sdk.exceptions.ApiException;
+import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.objects.audio.Audio;
 import com.vk.api.sdk.objects.board.TopicComment;
 import com.vk.api.sdk.objects.messages.Message;
@@ -28,9 +30,18 @@ import com.vk.api.sdk.objects.wall.Wallpost;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Random;
+
 public class CallbackApiLongPollHandler extends CallbackApiLongPoll {
 
     private static final Logger LOG = LoggerFactory.getLogger(CallbackApiLongPollHandler.class);
+
+    private Map<Integer, Integer> msgCounts = new HashMap<>();
+
+    private GroupActor groupActor;
 
     public CallbackApiLongPollHandler(VkApiClient client, UserActor actor, Integer groupId) {
         super(client, actor, groupId);
@@ -38,10 +49,28 @@ public class CallbackApiLongPollHandler extends CallbackApiLongPoll {
 
     public CallbackApiLongPollHandler(VkApiClient client, GroupActor actor) {
         super(client, actor);
+        groupActor = actor;
     }
 
     public void messageNew(Integer groupId, Message message) {
         LOG.info("messageNew: " + message.toString());
+
+        Integer peerId = message.getPeerId();
+        Integer messageCount = Optional.ofNullable(msgCounts.get(peerId)).orElse(0);
+        messageCount++;
+        msgCounts.put(peerId, messageCount);
+
+        try {
+            getClient().messages().send(groupActor)
+                    .randomId(new Random().nextInt(10000))
+                    .message("count = " + messageCount)
+                    .peerId(peerId)
+                    .execute();
+        } catch (ApiException e) {
+            e.printStackTrace();
+        } catch (ClientException e) {
+            e.printStackTrace();
+        }
     }
 
     public void messageReply(Integer groupId, Message message) {

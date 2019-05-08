@@ -1,4 +1,11 @@
 bot:
   group:
-    id: to-be-defined
-    token: to-be-defined
+    id:
+    token:
+
+server:
+  host: localhost
+  port: 8080
+
+client.id:
+client.secret:

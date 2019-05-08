@@ -48,4 +48,46 @@ return userComments;
 API.groups.get({"count": 1});
 API.groups.getById({"group_id": 181704638});
 - get wall post #1
-API.wall.get({"count": 1});
+API.wall.get({"count": 5});
+
+- get wall posts
+return API.wall.get({
+    "owner_id": "-76732610",
+    "offset": 10,
+    "count" : 1,
+});
+
+- get reposts
+return API.likes.getList({
+    "type": "post",
+    "owner_id": 19382170,
+    "item_id": 275,
+    "filter": "copies",
+    "extended": 1
+});
+
+- get reposts another way
+return API.wall.getReposts({
+    "owner_id": -181704638,
+    "post_id": 27
+}).items@.comments@.count;
+
+
+- get message history as user
+return API.messages.getHistory({
+    "user_id": 19382170,
+    "peer_id": 2000000071
+});
+
+- get message history as group
+return API.messages.getHistory({
+    "group_id": 181704638,
+    "peer_id": 2000000071
+});
+
+2000000071
+
+
+-181704638_27
+
+-76732610_511138
