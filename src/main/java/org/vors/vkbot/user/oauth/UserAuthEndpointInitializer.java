@@ -12,11 +12,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-import org.vors.vkbot.VkbotApplication;
+import org.vors.vkbot.VkbotApp;
 
 @Component
-public class UserActorInitializer {
-    private static final Logger LOG = LoggerFactory.getLogger(UserActorInitializer.class);
+public class UserAuthEndpointInitializer {
+    private static final Logger LOG = LoggerFactory.getLogger(UserAuthEndpointInitializer.class);
 
     @Value("${client.id}")
     private int clientId;
@@ -41,7 +41,7 @@ public class UserActorInitializer {
         ResourceHandler resourceHandler = new ResourceHandler();
         resourceHandler.setDirectoriesListed(true);
         resourceHandler.setWelcomeFiles(new String[]{"index.html"});
-        resourceHandler.setResourceBase(VkbotApplication.class.getResource("/static").getPath());
+        resourceHandler.setResourceBase(VkbotApp.class.getResource("/static").getPath());
 
         VkApiClient vk = new VkApiClient(new HttpTransportClient());
         handlers.setHandlers(new Handler[]{resourceHandler, new RequestHandler(vk, clientId, clientSecret, host, port)});
